@@ -31,7 +31,7 @@ void LEDWidget::Init(void)
 
 #if CONFIG_LED_TYPE_RMT
     rmt_config_t config             = RMT_DEFAULT_CONFIG_TX((gpio_num_t) CONFIG_LED_GPIO, (rmt_channel_t) CONFIG_LED_RMT_CHANNEL);
-    led_strip_config_t strip_config = LED_STRIP_DEFAULT_CONFIG(1, (led_strip_dev_t) config.channel);
+    led_strip_config_t strip_config = LED_STRIP_DEFAULT_CONFIG(120, (led_strip_dev_t) config.channel);
 
     config.clk_div = 2;
     rmt_config(&config);
@@ -125,8 +125,11 @@ void LEDWidget::DoSet(void)
     {
         HsvColor_t hsv = { mHue, mSaturation, brightness };
         RgbColor_t rgb = HsvToRgb(hsv);
-        mStrip->set_pixel(mStrip, 0, rgb.r, rgb.g, rgb.b);
+        for(int i=0; i< 120; i++){
+        mStrip->set_pixel(mStrip, i, rgb.r, rgb.g, rgb.b);
+        }
         mStrip->refresh(mStrip, 100);
+        
     }
 #else
     if (mGPIONum < GPIO_NUM_MAX)
